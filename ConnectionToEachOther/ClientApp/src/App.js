@@ -82,7 +82,12 @@ export default function App() {
     });
   }, []); // eslint-disable-line
 
-  const handleRescan = () => signalRService.getConnection()?.invoke('GetLanClients');
+  const handleRescan = () => {
+    const conn = signalRService.getConnection();
+    if (conn && conn.state === 'Connected') {
+      conn.invoke('GetLanClients');
+    }
+  };
 
   const handleSend = async () => {
     if (!selectedClient || files.length === 0) return;

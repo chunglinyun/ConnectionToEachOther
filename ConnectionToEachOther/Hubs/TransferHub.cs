@@ -41,7 +41,11 @@ public class TransferHub : Hub
 
     public async Task RegisterClient(string displayName)
     {
-        var ip = Context.GetHttpContext()?.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "127.0.0.1";
+        var remoteIp = Context.GetHttpContext()?.Connection.RemoteIpAddress;
+        var ip = remoteIp == null ? "127.0.0.1"
+            : remoteIp.IsIPv4MappedToIPv6 ? remoteIp.MapToIPv4().ToString()
+            : remoteIp.ToString();
+        Console.WriteLine($"ip:{ip}");
         _registry.Register(Context.ConnectionId, displayName, ip);
 
         // Broadcast updated list to all clients on same subnet (including self)

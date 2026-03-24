@@ -1,5 +1,6 @@
 using ConnectionToEachOther.Hubs;
 using ConnectionToEachOther.Services;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,13 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddSingleton<ClientRegistryService>();
 
 var app = builder.Build();
+
+// Trust X-Forwarded-For from the local SPA dev proxy
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownProxies = { System.Net.IPAddress.Loopback, System.Net.IPAddress.IPv6Loopback }
+});
 
 if (!app.Environment.IsDevelopment())
 {

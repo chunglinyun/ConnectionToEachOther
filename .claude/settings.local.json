@@ -4,7 +4,9 @@
       "Bash(dotnet add:*)",
       "Bash(npm install:*)",
       "Bash(dotnet build:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(find D:/Work/ConnectionToEachOther -name *.ts -o -name *.tsx)",
+      "Bash(find D:/Work/ConnectionToEachOther -name *.csproj)"
     ]
   }
 }
